@@ -27,7 +27,7 @@ exports.connect = function(server){
        
         io.on('connection', function (socket) {
             
-            console.log('socket.io: new connection, current number of connections:',NumberOfConnections());
+            console.log('socket.io: new connection, current number of authorized connections:',NumberOfConnections());
               //Get User   
               socket.on('getUser', function (data) {
                    console.log('socket.io: call getUser');
@@ -46,7 +46,7 @@ exports.connect = function(server){
                 // Logout
                 socket.on('logout', function (token) {
                       clients[socket.id] && delete clients[socket.id];
-                     console.log('close connection, number of connections:',NumberOfConnections());
+                     console.log('close connection, number of authorized connections:',NumberOfConnections());
                   
                 });
 
@@ -54,7 +54,7 @@ exports.connect = function(server){
 
             socket.on('disconnect', function () {
                  clients[socket.id] && delete clients[socket.id];
-                console.log('close connection, number of connections:',NumberOfConnections());
+                console.log('close connection, number of authorized connections:',NumberOfConnections());
                 
 
             });
