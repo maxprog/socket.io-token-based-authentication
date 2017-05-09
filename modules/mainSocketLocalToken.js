@@ -1,6 +1,6 @@
 
 /* 
-Local generated token
+Socket.io Authentication based on Local generated token
 */
 
 const user = require('./lib/user'),
