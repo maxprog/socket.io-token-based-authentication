@@ -1,8 +1,6 @@
-
 /* 
 Socket.io Authentication based on Local generated token
 */
-
 const user = require('./lib/user'),
      socketio = require('socket.io');
      
@@ -17,8 +15,6 @@ global.jwtSecret = process.env.LOCAL_JWT_SECRET;
 global.NumberOfConnections = function() {
     return Object.keys(clients).length;
 }
-
-
 
 exports.connect = function(server){
   
@@ -54,14 +50,11 @@ exports.connect = function(server){
                   
                 });
 
-
-
-            socket.on('disconnect', function () {
+     
+               socket.on('disconnect', function () {
                  clients[socket.id] && delete clients[socket.id];
                 console.log('close connection, number of authorized connections:',NumberOfConnections());
-                
-
-            });
+                 });
         });
 
         io.on('end', function() {

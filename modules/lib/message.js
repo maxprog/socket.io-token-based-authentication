@@ -1,6 +1,6 @@
+ const _  = require('lodash');
 
 exports.broadcast = function(socket,data){
-    
     
     security.verifyConnection(socket,data).then(function(result) {
   
@@ -8,7 +8,8 @@ exports.broadcast = function(socket,data){
         try{
         var obj = {org:data.org,topic:data.topic,message:data.message};
                 console.log('socket.io broadcast:',obj);
-                clients.forEach(function(client) {
+                _.each(clients,function(client,index) {
+                   
                     client.emit('message', obj);
                     }
                 );

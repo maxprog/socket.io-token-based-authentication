@@ -4,17 +4,10 @@ const    _  = require('lodash'),
 
 
 const func = (socket,data) => {
+    
     return new Promise((resolve, reject) => {
                 
-                verifyConnection(socket,data);
-    });
-};
-
-exports.verifyConnection = func;
-
-const verifyConnection = function(socket, data) {
-
-    var token = data && data.token || null;
+                 var token = data && data.token || null;
 
     if(!socket || socket==='undefined' || !clients[socket.id] || !token)
     {
@@ -54,30 +47,23 @@ const verifyConnection = function(socket, data) {
                          }
                   else {  
                             console.log('user:true'); 
-                            resolve(true);}
+                            resolve(true);
+                        }
 
          });
     }
-    
+    });
 };
+
+exports.verifyConnection = func;
+
+
 
 
 const func2 = (socket,data) => {
     return new Promise((resolve, reject) => {
       
-       verifyConnectionAuth0(socket,data);
-
-    });
-};
-
-
-
-exports.verifyConnectionAuth0 = func2;
-
-exports.verifyConnectionAuth0 = function(socket, data) {
-
-   
-    var token = data && data.token || null;
+      var token = data && data.token || null;
    
 
      if(!socket || socket==='undefined' || !clients[socket.id] || !token)
@@ -123,8 +109,15 @@ exports.verifyConnectionAuth0 = function(socket, data) {
 
          });
     };
-    
+
+    });
 };
+
+
+
+exports.verifyConnectionAuth0 = func2;
+
+
 
 exports.authenticateUser = function authenticateUser (socket, data) {
 
@@ -165,7 +158,7 @@ const loginUser = function loginUser(socket, user) {
   var data =  {profile: profile, token:token};
     socket.emit('login.success', data);
    
-    clients[socket.id]=data;
+    clients[socket.id]=socket;
     //clients[token]=data;
     console.log('User logged to socket.io. number of authorized connections:',NumberOfConnections());
      console.log('User profile logged to socket.io=',profile);
