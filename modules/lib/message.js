@@ -1,19 +1,26 @@
 
-exports.broadcast = function(data){
-    try{
+exports.broadcast = function(socket,data){
     
-        if (!security.verifyConnection(socket,data)) return;
-        
+    
+    security.verifyConnection(socket,data).then(function(result) {
+  
+    console.log('Access allowed to broadcast()');
+        try{
         var obj = {org:data.org,topic:data.topic,message:data.message};
-        console.log('socket.io broadcast:',obj);
-        clients.forEach(function(client) {
-            client.emit('message', obj);
+                console.log('socket.io broadcast:',obj);
+                clients.forEach(function(client) {
+                    client.emit('message', obj);
+                    }
+                );
+        }catch(ex){
+                console.log('socket.io: Error during sending message to clients ');
             }
-        );
 
-    }catch(ex){
-        console.log('socket.io: Error during sending message to clients ');
-    }
+}, function(err) {
+  console.log('Access denied to broadcast()'); return;
+});
+
+       
 }
 
 

@@ -35,7 +35,7 @@ exports.connect = function(server){
                });
 
                 socket.on('message', function (data) {
-                 message.broadcast(data);
+                 message.broadcast(socket,data);
                });
 
                // Login

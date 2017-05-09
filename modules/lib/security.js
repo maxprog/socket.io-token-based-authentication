@@ -16,12 +16,13 @@ const verifyConnection = function(socket, data) {
 
     var token = data && data.token || null;
 
-    if(!token || !clients[socket.id])
+    if(!socket || socket==='undefined' || !clients[socket.id] || !token)
     {
         console.log('Unauthorized access: access denied');
         message.sendError(socket,'Invalid email or password');  
-        //reject(false);
-        return false; 
+      
+        socket.disconnect();
+        reject(false);
     }
     
     if (token) 
@@ -34,8 +35,9 @@ const verifyConnection = function(socket, data) {
              
                 console.log(err);
                  message.sendError(socket,'Invalid email or password');
-                  //reject(false);
-                return false;
+                
+                    socket.disconnect();
+                reject(false);
              }
 
 
@@ -46,13 +48,13 @@ const verifyConnection = function(socket, data) {
              if(!user) {
                          console.log('!user:false');
                          message.sendError(socket, 'Invalid email or password');
-                          //reject(false);
-                         return false;
+                         
+                          socket.disconnect();
+                          reject(false);
                          }
                   else {  
                             console.log('user:true'); 
-                             //reject(true);
-                            return true; }
+                            resolve(true);}
 
          });
     }
@@ -64,13 +66,13 @@ const func2 = (socket,data) => {
     return new Promise((resolve, reject) => {
       
        verifyConnectionAuth0(socket,data);
-       
+
     });
 };
 
 
 
-exports.verifyConnection = func2;
+exports.verifyConnectionAuth0 = func2;
 
 exports.verifyConnectionAuth0 = function(socket, data) {
 
@@ -78,12 +80,13 @@ exports.verifyConnectionAuth0 = function(socket, data) {
     var token = data && data.token || null;
    
 
-    if(!token || !clients[socket.id])
+     if(!socket || socket==='undefined' || !clients[socket.id] || !token)
     {
         console.log('Unauthorized access: access denied');
         message.sendError(socket,'Invalid email or password');  
-         //reject(false);
-        return false; 
+        
+           socket.disconnect();
+      reject(false);
     }
     
     if (token) 
@@ -93,11 +96,11 @@ exports.verifyConnectionAuth0 = function(socket, data) {
         {
             if (err) 
             {
-             
-                console.log(err);
+               console.log(err);
                  message.sendError(socket,'Invalid email or password');
-                  //reject(false);
-                return false;
+                  
+                    socket.disconnect();
+               reject(false);
              }
 
 
@@ -109,12 +112,13 @@ exports.verifyConnectionAuth0 = function(socket, data) {
               
              if(!user) {
                          message.sendError(socket, 'Invalid email or password');
-                          //reject(false);
-                         return false;
+                         
+                            socket.disconnect();
+                        reject(false);
                          }
                   else { 
-                       //reject(true);
-                        return true; 
+                       
+                        resolve(true);
                     }
 
          });
@@ -163,7 +167,8 @@ const loginUser = function loginUser(socket, user) {
    
     clients[socket.id]=data;
     //clients[token]=data;
-    console.log('User logged to socket.io. Number of connections',NumberOfConnections(),' user=',profile);
+    console.log('User logged to socket.io. number of authorized connections:',NumberOfConnections());
+     console.log('User profile logged to socket.io=',profile);
 
    
     return;
