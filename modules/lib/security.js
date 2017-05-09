@@ -19,9 +19,9 @@ const verifyConnection = function(socket, data) {
     if(!socket || socket==='undefined' || !clients[socket.id] || !token)
     {
         console.log('Unauthorized access: access denied');
-        message.sendError(socket,'Invalid email or password');  
+        message.sendError(socket,'Unauthorized access: access denied');  
       
-        socket.disconnect();
+        socket.disconnect(true);
         reject(false);
     }
     
@@ -33,10 +33,10 @@ const verifyConnection = function(socket, data) {
             if (err) 
             {
              
-                console.log(err);
-                 message.sendError(socket,'Invalid email or password');
+                console.log('Invalid token');
+                 message.sendError(socket,'Invalid token');
                 
-                    socket.disconnect();
+                socket.disconnect(true);
                 reject(false);
              }
 
@@ -44,12 +44,12 @@ const verifyConnection = function(socket, data) {
             let userID = decoded.id;
          
              let user = _.find(users,{id:userID});
-             console.log('founded user',user);
+           
              if(!user) {
-                         console.log('!user:false');
-                         message.sendError(socket, 'Invalid email or password');
+                         console.log('User not found');
+                         message.sendError(socket, 'User not found');
                          
-                          socket.disconnect();
+                            socket.disconnect(true);
                           reject(false);
                          }
                   else {  
@@ -83,10 +83,10 @@ exports.verifyConnectionAuth0 = function(socket, data) {
      if(!socket || socket==='undefined' || !clients[socket.id] || !token)
     {
         console.log('Unauthorized access: access denied');
-        message.sendError(socket,'Invalid email or password');  
+        message.sendError(socket,'Unauthorized access: access denied');  
         
-           socket.disconnect();
-      reject(false);
+           socket.disconnect(true);
+           reject(false);
     }
     
     if (token) 
@@ -97,9 +97,9 @@ exports.verifyConnectionAuth0 = function(socket, data) {
             if (err) 
             {
                console.log(err);
-                 message.sendError(socket,'Invalid email or password');
+                 message.sendError(socket,'Invalid token');
                   
-                    socket.disconnect();
+               socket.disconnect(true);
                reject(false);
              }
 
@@ -111,9 +111,9 @@ exports.verifyConnectionAuth0 = function(socket, data) {
              let user = _.find(users,{auth0_user_id:auth0UserID});
               
              if(!user) {
-                         message.sendError(socket, 'Invalid email or password');
+                         message.sendError(socket, 'User not found');
                          
-                            socket.disconnect();
+                        socket.disconnect(true);
                         reject(false);
                          }
                   else { 

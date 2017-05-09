@@ -28,23 +28,27 @@ exports.connect = function(server){
         io.on('connection', function (socket) {
             
             console.log('socket.io: new connection, current number of authorized connections:',NumberOfConnections());
+          
               //Get User   
               socket.on('getUser', function (data) {
-                   console.log('socket.io: call getUser');
+                console.log('socket.io: call getUser()');
                  user.getUser(socket, data);
                });
 
                 socket.on('message', function (data) {
+                 console.log('socket.io: call message()');
                  message.broadcast(socket,data);
                });
 
                // Login
                 socket.on('login', function (data) {
+                     console.log('socket.io: call login()');
                     security.authenticateUser(socket, data);
                 });
 
                 // Logout
                 socket.on('logout', function (token) {
+                      console.log('socket.io: call logout()');
                       clients[socket.id] && delete clients[socket.id];
                      console.log('close connection, number of authorized connections:',NumberOfConnections());
                   

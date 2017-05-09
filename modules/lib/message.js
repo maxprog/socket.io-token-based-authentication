@@ -25,8 +25,8 @@ exports.broadcast = function(socket,data){
 
 
 exports.sendError = function(socket, message) {
-
-          return socket.emit('error', {
+console.log('socket.io: send Error to socket client');
+          socket.emit('error.messages', {
               message: message
           });
    
